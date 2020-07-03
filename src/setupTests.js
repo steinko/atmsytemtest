@@ -3,20 +3,22 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom/extend-expect';
-
+require('dotenv').config()
 
 let chrome = require('selenium-webdriver/chrome');
 let {Builder} = require('selenium-webdriver');
 
-const hostName = 'http://localhost:3000'
+let hostName 
 let driver
 
 beforeAll(async ()=>{  
+   hostName = process.env.URL
    jest.setTimeout(100000)
     driver = await new Builder()
      .forBrowser('chrome')
      .setChromeOptions(new chrome.Options().headless())
      .build();
+    await driver.navigate().to(hostName)
  })
 
 afterAll(async ()=>{ 
@@ -28,6 +30,3 @@ it('should do nothing', ()=> { })
 export default function getDriver() { 
     return driver}
     
-export function getHostName() { 
-   return hostName
- }
